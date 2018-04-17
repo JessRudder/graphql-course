@@ -1,12 +1,17 @@
 {
   "users": [
-    { "id": "23", "firstName": "Bill", "age": 20, "companyId": "1" },
-    { "id": "47", "firstName": "Jason", "age": 30, "companyId": "1" },
-    { "id": "11", "firstName": "Joshua", "age": 36, "companyId": "2" },
-    { "id": "1", "firstName": "Jessica", "age": 36, "companyId": "2" }
+    { "id": "1", "firstName": "Jessica", "age": 36, "companyId": "2", "hobbyId": "3" },
+    { "id": "2", "firstName": "Joshua", "age": 36, "companyId": "2", "hobbyId": "2" },
+    { "id": "3", "firstName": "Bill", "age": 20, "companyId": "1", "hobbyId": "1" },
+    { "id": "4", "firstName": "Jason", "age": 30, "companyId": "1" }
   ],
   "companies": [
     { "id": 1, "name": "Apple", "description": "iphone" },
     { "id": 2, "name": "Google", "description": "ads" }
+  ],
+  "hobbies": [
+    { "id": 1, "name": "running" },
+    { "id": 2, "name": "curling" },
+    { "id": 3, "name": "sleeping" }
   ]
 }

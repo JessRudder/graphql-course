@@ -7,12 +7,45 @@ const {
   GraphQLSchema
 } = graphql;
 
+const CompanyType = new GraphQLObjectType({
+  name: 'Company',
+  fields: {
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    description: { type: GraphQLString}
+  }
+})
+
+const HobbyType = new GraphQLObjectType({
+  name: 'Hobby',
+  fields: {
+    name: { type: GraphQLString }
+  }
+})
+
 const UserType = new GraphQLObjectType({
   name: 'User',
   fields: {
     id: { type: GraphQLString },
     firstName: { type: GraphQLString },
-    age: { type: GraphQLInt }
+    age: { type: GraphQLInt },
+    company: {
+      type: CompanyType,
+      resolve(parentValue, args) {
+        return axios.get(`http://localhost:3000/companies/${parentValue.companyId}`)
+          .then(resp => resp.data);
+      }
+    },
+    hobby: {
+      type: HobbyType,
+      resolve(parentValue, args) {
+        return parentValue.hobbyId
+          ? axios.get(`http://localhost:3000/hobbies/${parentValue.hobbyId}`)
+              .then(resp => resp.data)
+          : null
+        ;
+      }
+    }
   }
 });
 
