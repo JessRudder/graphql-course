@@ -30,8 +30,10 @@
     },
     {
       "firstName": "Alice",
-      "age": 11,
-      "id": "TZyUcAp"
+      "age": 3,
+      "id": "DTtqsxk",
+      "companyId": null,
+      "hobbyId": "1"
     }
   ],
   "companies": [

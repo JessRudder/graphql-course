@@ -322,7 +322,88 @@ Example Response from that Mutation
 ```
 
 ## Do It Yourself - Delete Mutation!
+Going to add a deleteUser mutation
+  * use add user as a guide
+  - just another field on the fields object in the mutation
+  - args you'll only need to know the id
+  - type is type of object you expect to be returned by the resolve
+  - the response should be `null`
+
+You'll need an `axios.delete` with the id
+
+```
+deleteUser: {
+  type: UserType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve(parentValue, args) {
+    return axios.delete(`http://localhost:3000/users/${args.id}`)
+      .then(res => res.data);
+  }
+}
+```
+
+With the query:
+```
+mutation {
+  deleteUser(id: "TZyUcAp") {
+    id
+  }
+}
+```
+
+Remember to request some data back from the mutation
+  - should be null, but still need to request it
+  - this is because, by default, the JSON server doesn't return anything after deleting a user
 
 
 ## Do It Yourself - Edit Mutation!
+Take a users id and some properties to update and return the updated user over to graphql
+  - NOTE need to understand difference between put and patch request
+    - put is if we want to completely replace the record in a database with the data we're sending over
+      - if fields are missing in your request, they'll be null in the record
+    - patch is if we just want to update the record with the fields we're sending over
+      - if fields are missing in your request, they will be untouched in the existing record
+  - This means you should use a patch request
+
+```
+editUser: {
+  type: UserType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    firstName: { type: GraphQLString },
+    age: { type: GraphQLInt },
+    companyId: { type: GraphQLString },
+    hobbyId: { type: GraphQLString }
+  },
+  resolve(parentValue, args) {
+    return axios.patch(`http://localhost:3000/users/${args.id}`, args)
+      .then(res => res.data);
+  }
+}
+```
+
+Expectations
+  - type should match the thing that you're updating
+  - args will have to include the id property
+    * everything else will most likely be optional
+  - resolve function will have parent value and args
+    - dont need to desctructure args, throw the entire thing to the server
+    - if record already has an ID set, JSON server will ignore any other id passed through in the args
+
+Call it in the usual way:
+```
+mutation {
+  editUser(id: "DTtqsxk", age: 3) {
+    id
+    firstName
+    age
+  }
+}
+```
+
+In the future we'll be splitting up this schema file into a collection of smaller schema files
+  - was just smooshed in 1 for the first project for some fun
+  - Facebook has all of theirs smooshed together in a single file though (FAMOUSLY!)
 
