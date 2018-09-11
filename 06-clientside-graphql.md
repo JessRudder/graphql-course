@@ -48,6 +48,46 @@ Fire up the app using `npm run dev`
   - also should have localhost:4000/graphql
 
 ## Working Through the Schema
+GraphQL automatically generates documentation which is really handy for getting to understand a new app
+  - can walk through the documentation explorer in graphiQL to get a feel for how the data in your app is set up
+  - also want a good idea of which mutations are available (how can you change the data you have access to)
+
+Run mutation to add some data to the app:
+
+```
+mutation{
+  addSong(title: "Baby Got Back") {
+    id
+  }
+}
+```
+
+Note: For the addLyricToSong mutation, I had to update the code in `models/song.js` from `song.lyrics.push(lyric)` to `song.lyrics = [...song.lyrics, lyric]` due to changes in how new versions of `mongoose` work.
+
+```
+mutation{
+  addLyricToSong(songId: "5b981b90d09f6d294a6c8720", content: "Becky! Look at her butt."){
+    id
+  }
+}
+```
+
+Now write a query to get the lyrics for the song back.
+
+```
+{
+  songs {
+    id
+    title
+    lyrics {
+      content
+    }
+  }
+}
+```
+
+Can go to `mlab.com` and look at the records in the database directly
+  - can edit inside of that too!
 
 
 ## Apollo Client Setup
