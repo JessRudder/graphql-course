@@ -91,7 +91,49 @@ Can go to `mlab.com` and look at the records in the database directly
 
 
 ## Apollo Client Setup
+Initial work will be done inside of `/client/index.html` in the `Root` definition
+  - will need to do a bit of a refactor to set up the Apollo Client/Provider
 
+Overall in app, React application is very small piece of th epuzzle
+  - Apollo Provider (wraps React app)
+  - Apollo Store (communicates directly with GraphQL server and stores data it receives back)
+  - GraphQL Server (talks to the database and has the data)
+
+Apollo Store
+  - Doesn't care which client-side framework is being used to show things on the screen
+  - Fairly stand alone
+  - Create it and then don't touch it much
+
+Apollo Provider
+  - Takes data from the store and injects it into the application
+  - Glue layer between the store and our application
+  - Where we'll do most of our work
+
+`react-apollo` is the compatibility layer that lets it know we're working with react
+
+Very similar to how Redux works
+  - create a new client
+  - Note: the created ApolloClient instance assumes that a `graphql` end point is available as defined in the schema
+  - if you deviate from those assumptions, you'll have to add more configuration to the setup
+
+```
+const client = new ApolloClient({});
+```
+
+Wrap the Root element in the `<ApolloProvider` and pass in the `client`
+
+```
+const Root = () => {
+  return (
+    <ApolloProvider client={client}>
+      <div>Lyrical</div>
+    </ApolloProvider>
+  );
+};
+
+```
+
+`<ApolloClient>` is a react component and we're passing in a reference to the store
 
 ## React Component Design
 
