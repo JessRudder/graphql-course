@@ -136,9 +136,103 @@ const Root = () => {
 `<ApolloClient>` is a react component and we're passing in a reference to the store
 
 ## React Component Design
+Components in the app
+- song index page
+- song detail page
 
+Make component "song list" to show all of the songs in the app
+- single component to render list and items in it
+
+Song detail page will have song detail component
+- SongDetail: repsponsible for fetching lyrics for the song
+- LyricList: lyrics rendered by lyric list
+- LyricCreate: add lyric box that will allow you to create new lyric and add it to a song
+
+Will also probably have SongCreate as well on another page
+
+Start by making a class based component because we think there's going to be helper methods/complexity
+
+```
+import React, { Component } from 'react';
+
+class SongList extends Component {
+  render () {
+    return (
+      <div>
+        SongList
+      </div>
+    );
+  }
+}
+
+export default SongList;
+```
 
 ## QGL Queries in React
+SongList component is supposed to show all of the songs in our database
+- need to get data from GraphQL server into component
 
+Checklist for Getting Data from GraphQL into React
+- Identify data required
+- Write query in Graphiql (for practice) and in component file
+- Bond query + component
+- Access Data!
+
+For list of songs, we only need song title
+- don't need anything else
+
+We won't need to tell it to fetch the data or make an ajax call
+- GraphQL and Apollo handle that
+
+```
+{
+  songs {
+    title
+  }
+}
+```
+
+Now we need to write the query out in our component file
+- use 'graphql-tag' library
+
+`import gql from 'graphql-tag';`
+
+This allows you to include the query on the page
+
+```
+const query = gql`
+  {
+    songs {
+      title
+    }
+  }
+`;
+```
+
+This is only defining the query, it does not execute it.
 
 ## Bonding Queries with Components
+To help with bonding query to component, we need additional library
+
+`import { graphql } from 'react-apollo';`
+
+`react-apollo` library is the glue layer between react and apollo so it's no surprise the bonding tool comes from that library
+
+Now you need to update the export to include the query
+
+```
+export default graphql(query)(SongList);
+```
+
+First call returns a function which is immediately invoked by second set of parenthesis
+
+Component gets rendered
+        V
+Query Issued (Async)
+        V
+Query Complete (data in props object)
+        V
+Rerender Component
+
+Data won't be there when component is first rendered
+- make sure component works with or without data being available
